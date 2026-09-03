@@ -1,0 +1,285 @@
+/* ============================================================
+   DAILY·AI — 草稿E "Art Deco" 装饰艺术风
+   墨黑鎏金 · 翡翠点缀 · 几何扇纹 · 金属哑光(无辉光)
+   ============================================================ */
+
+:root {
+  --bg: #101014;              /* 墨黑 */
+  --surface: #17171d;
+  --surface-2: #1d1d25;
+  --line: #2c2c35;
+  --line-strong: #3c3c47;
+  --text: #ede4cf;            /* 香槟 */
+  --muted: #8f8a79;
+  --accent: #c9a227;          /* 鎏金(哑光) */
+  --accent-ink: #101014;
+  --accent-2: #2e7d63;        /* 翡翠 */
+  --score: #c9a227;
+  --shadow: 0 22px 44px -26px rgba(0, 0, 0, .85);
+  --ease: cubic-bezier(.22, .61, .21, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  font-size: 16.5px;
+  line-height: 1.75;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px 96px; }
+
+/* ---------- Hero(居中对称) ---------- */
+.hero {
+  padding: 92px 0 64px;
+  border-bottom: 1px solid var(--line-strong);
+  position: relative;
+  text-align: center;
+}
+/* 扇纹装饰:哑光细条纹,非辉光 */
+.hero::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-conic-gradient(
+    from -90deg at 50% -42%,
+    rgba(201, 162, 39, .075) 0deg 1.1deg,
+    transparent 1.1deg 7deg);
+  pointer-events: none;
+}
+.hero .wrap { position: relative; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 13px; letter-spacing: .42em; text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  outline: 1px solid var(--line-strong); outline-offset: 4px;
+  padding: 9px 24px 8px;
+}
+.badge::before, .badge::after {
+  content: ""; width: 7px; height: 7px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.site-title {
+  font-family: Didot, "Bodoni MT", Georgia, "Songti SC", SimSun, serif;
+  font-weight: 700;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 1.16;
+  letter-spacing: .06em;
+  margin: 30px auto 20px;
+  max-width: 16em;
+}
+.site-title em, .site-title i { font-style: normal; color: var(--accent); }
+
+.sub { font-size: 18px; color: var(--muted); max-width: 36em; margin: 0 auto; }
+
+.hero-stats {
+  display: flex; gap: 64px; margin-top: 42px; flex-wrap: wrap; justify-content: center;
+}
+.stat { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.stat b {
+  font-family: Didot, Georgia, "Songti SC", serif;
+  font-size: 40px; font-weight: 700; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.stat span { font-size: 12.5px; letter-spacing: .3em; color: var(--muted); text-transform: uppercase; }
+.stat b::after {
+  content: ""; display: block; width: 34px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 12px auto 0;
+}
+
+/* ---------- Section 标题 ---------- */
+.section {
+  display: flex; align-items: baseline; justify-content: center; gap: 16px;
+  font-family: Didot, Georgia, "Songti SC", serif;
+  font-size: 29px; font-weight: 700; letter-spacing: .08em;
+  margin: 72px 0 32px;
+  position: relative;
+  padding-bottom: 18px;
+}
+.section::before, .section::after {
+  content: ""; align-self: center;
+  width: 64px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent));
+  flex: none;
+}
+.section::after { background: linear-gradient(90deg, var(--accent), transparent); }
+.section .count {
+  font-size: 16px; font-weight: 400; color: var(--muted);
+  font-variant-numeric: tabular-nums; letter-spacing: .12em;
+}
+
+/* ---------- 卡片 ---------- */
+.featured-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 26px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  padding: 30px 30px 24px;
+  display: flex; flex-direction: column;
+  position: relative;
+  transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+}
+.card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
+/* 卡顶金色阶线 */
+.card::before {
+  content: ""; position: absolute; top: -1px; left: 24px; right: 24px;
+  height: 2px; background: linear-gradient(90deg, var(--accent), transparent 70%);
+  opacity: .55;
+}
+
+.card.featured { border-color: var(--line-strong); background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--surface); }
+.card.featured::before { background: var(--accent); opacity: 1; height: 3px; }
+
+.tag, .mark {
+  align-self: flex-start;
+  font-size: 12px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--accent-2);
+  border: 1px solid var(--accent-2);
+  padding: 4px 12px 3px;
+}
+
+.rank {
+  position: absolute; top: 20px; right: 24px;
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  font-family: Didot, Georgia, serif; font-size: 19px; font-weight: 700;
+  color: var(--accent);
+  transition: color .3s var(--ease);
+}
+.rank::before { /* 旋转菱形边框由伪元素承担,正文数字保持水平 */
+  content: ""; position: absolute; inset: 5px;
+  border: 1px solid var(--line-strong);
+  transform: rotate(45deg);
+  transition: border-color .3s var(--ease);
+}
+.card:hover .rank::before { border-color: var(--accent); }
+
+.card h3 {
+  font-family: Didot, Georgia, "Songti SC", SimSun, serif;
+  font-size: 22.5px; font-weight: 700; line-height: 1.5;
+  letter-spacing: .02em;
+  margin: 20px 0 10px;
+}
+.card h3 a { color: inherit; text-decoration: none; transition: color .3s var(--ease); }
+.card h3 a:hover { color: var(--accent); }
+
+.summary { font-size: 15.5px; color: #b9b09a; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.voice {
+  margin-top: auto;
+  font-size: 14.5px; color: var(--muted);
+  border-left: 2px solid var(--accent-2);
+  padding-left: 14px; margin-top: 16px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.meta {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--muted);
+  letter-spacing: .06em;
+}
+.meta .src { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta .score { color: var(--score); font-family: Didot, Georgia, serif; font-weight: 700; }
+.meta .time { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+/* ---------- AI 页跳转卡 ---------- */
+.ai-link-wrap { margin-top: 64px; }
+.ai-link {
+  display: flex; justify-content: space-between; align-items: center;
+  border: 1px solid var(--accent);
+  outline: 1px solid var(--line-strong); outline-offset: 5px;
+  padding: 26px 32px; text-decoration: none; color: var(--text);
+  font-family: Didot, Georgia, "Songti SC", serif;
+  font-size: 21px; font-weight: 700; letter-spacing: .08em;
+  transition: background .3s var(--ease), color .3s var(--ease);
+}
+.ai-link .n { font-family: Didot, Georgia, serif; font-size: 26px; transition: transform .3s var(--ease); }
+.ai-link:hover { background: var(--accent); color: var(--accent-ink); }
+.ai-link:hover .n { transform: translateX(8px); }
+
+/* ---------- 归档 ---------- */
+.archive { margin-top: 80px; border-top: 1px solid var(--line-strong); padding-top: 10px; }
+.archive a {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 16px 6px; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: var(--text);
+  font-family: Didot, Georgia, "Songti SC", serif; font-size: 17px; letter-spacing: .06em;
+  transition: color .25s var(--ease), padding-left .25s var(--ease);
+}
+.archive a:hover { padding-left: 16px; color: var(--accent); }
+.archive .count { font-size: 13.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.back {
+  display: inline-block; margin: 48px 0 0;
+  color: var(--muted); text-decoration: none; font-size: 14.5px; letter-spacing: .14em;
+}
+.back:hover { color: var(--accent); }
+.back::before { content: "← "; }
+
+footer {
+  margin-top: 96px; padding: 30px 0 0;
+  border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--muted); letter-spacing: .18em; text-align: center;
+}
+footer .sep { margin: 0 12px; opacity: .55; }
+
+/* body.ai 变体:AI 页以翡翠为主导 */
+body.ai .badge { color: var(--accent-2); border-color: var(--accent-2); }
+body.ai .badge::before, body.ai .badge::after { background: var(--accent-2); }
+body.ai .stat b { color: var(--text); }
+body.ai .card.featured::before { background: linear-gradient(90deg, var(--accent-2), transparent 70%); }
+body.ai .card:hover { border-color: var(--accent-2); }
+body.ai .ai-link { border-color: var(--accent-2); }
+body.ai .ai-link:hover { background: var(--accent-2); color: #fff; }
+
+/* ---------- 入场动效 ---------- */
+.hero-badge, .hero-title, .hero-sub { animation: heroFadeSlide .7s var(--ease) both; }
+.hero-title { animation-delay: .08s; }
+.hero-sub { animation-delay: .16s; }
+.hero-stats { animation: heroFadeSlide .7s var(--ease) .24s both; }
+.hero-stats .stat b[data-target] { animation: heroPop .5s var(--ease) .5s both; }
+@keyframes heroFadeSlide { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+@keyframes heroPop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+@keyframes badgePulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.badge::before { animation: badgePulse 2.4s ease-in-out infinite; }
+
+.anim { opacity: 0; transform: translateY(30px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.anim-scale { transform: translateY(18px) scale(.985); }
+.anim-fade-left { transform: translateX(-36px); }
+.anim-fade-right { transform: translateX(36px); }
+.anim.visible { opacity: 1; transform: none; }
+.d0 { transition-delay: .02s; } .d1 { transition-delay: .09s; } .d2 { transition-delay: .16s; }
+.d3 { transition-delay: .23s; } .d4 { transition-delay: .30s; } .d5 { transition-delay: .37s; }
+.d6 { transition-delay: .44s; } .d7 { transition-delay: .51s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .anim { opacity: 1; transform: none; }
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 720px) {
+  .wrap { padding: 0 20px 64px; }
+  .hero { padding: 64px 0 40px; }
+  .site-title { font-size: clamp(32px, 9vw, 46px); }
+  .hero-stats { gap: 30px; }
+  .featured-row { grid-template-columns: 1fr; }
+  .rank { top: 16px; right: 18px; width: 38px; height: 38px; font-size: 16px; }
+  .section::before, .section::after { width: 30px; }
+}
