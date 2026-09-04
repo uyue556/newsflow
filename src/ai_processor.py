@@ -119,30 +119,38 @@ def ai_generate_script(daily):
 
 
 def _script_one(it):
-    """为单条新闻生成 30-60 字口播脚本 + 150-200 字详情页正文摘要(detail_text)。"""
+    """为单条新闻生成 60-70 秒口播脚本(300-350字) + 150-200 字详情页正文摘要(detail_text)。"""
     title = it["title"][:120]
-    summary = (it.get("raw_summary") or it.get("summary") or "")[:150]
+    summary = (it.get("raw_summary") or it.get("summary") or "")[:600]
     prompt = f"""根据下面的新闻信息,输出严格的 JSON 对象,不要任何解释:
-{{"voice": "30-60字中文口播快讯,适合短视频配音,语气客观带点节奏感,直接输出文本,不要引号", "detail": "150-200字中文详情摘要,保留关键数据、人名、产品名与结论,条理清晰,适合网页正文阅读"}}
+{{"voice": "300-350字中文口播快讯,时长约60-70秒,适合短视频配音,语气客观带节奏感,结构:开头一句钩子引出事件,中间讲清事件经过与关键数据/人名/产品名,结尾给影响或展望;直接输出文本,不要引号", "detail": "150-200字中文详情摘要,保留关键数据、人名、产品名与结论,条理清晰,适合网页正文阅读"}}
 
 标题: {title}
 摘要: {summary}"""
-    out = deepseek_chat([
-        {"role": "system", "content": "你只输出合法 JSON 对象,不要任何解释。"},
-        {"role": "user", "content": prompt},
-    ], temperature=0.8, max_tokens=600).strip()
+
+    def _call():
+        return deepseek_chat([
+            {"role": "system", "content": "你只输出合法 JSON 对象,不要任何解释。"},
+            {"role": "user", "content": prompt},
+        ], temperature=0.8, max_tokens=900).strip()
+
     voice, detail = "", ""
-    start, end = out.find("{"), out.rfind("}")
-    if start != -1 and end > start:
-        try:
-            parsed = json.loads(out[start:end + 1])
-            voice = (parsed.get("voice") or "").strip()
-            detail = (parsed.get("detail") or "").strip()
-        except (ValueError, TypeError):
-            pass
+    # 口播 60-70 秒约 300-350 字;过短(疑似截断或偷懒)时重试一次
+    for _ in range(2):
+        out = _call()
+        start, end = out.find("{"), out.rfind("}")
+        if start != -1 and end > start:
+            try:
+                parsed = json.loads(out[start:end + 1])
+                voice = (parsed.get("voice") or "").strip()
+                detail = (parsed.get("detail") or "").strip()
+            except (ValueError, TypeError):
+                pass
+        if len(voice) >= 270:
+            break
     if not voice:
         # 兜底:把整段输出当口播文本
-        voice = out.replace("{", "").replace("}", "").replace('"', "").strip()[:80]
+        voice = out.replace("{", "").replace("}", "").replace('"', "").strip()[:300]
     it["voice_script"] = voice
     if detail:
         it["detail_text"] = detail

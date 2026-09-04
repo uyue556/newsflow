@@ -70,8 +70,8 @@ $PY src/video_builder.py --date 2026-08-13 --voice yunjian --rate=-10%  # 换音
 
 产物:
 - 网页: `site/index.html`(双击用浏览器打开)、`site/ai.html`(AI 板块)、`site/news/YYYY-MM-DD_NN.html`(单条 AI 快讯详情页,`site/ai.html` 卡片上"详情 →"可跳转)、`site/daily/YYYY-MM-DD.html`(往期详情)、`site/curated.html`(播报策划,当天全部条目供人工勾选/排序)、`site/styles/mon~sun.html`(七风格预览页)
-- 视频: `video/YYYY-MM-DD_horizontal.mp4`(B站 16:9,默认)、`video/YYYY-MM-DD_vertical.mp4`(抖音 9:16,`--vertical`/`--both` 时生成);片头为整体首页页头(口播"欢迎收看X月X日的每日AI快讯"),正文逐条切换单条快讯详情页
-- 工单: `publish_queue/YYYY-MM-DD-bilibili.json`、`YYYY-MM-DD-douyin.json`(半自动,人工审核后发布)
+- 视频: `video/YYYY-MM-DD_horizontal.mp4`(B站 16:9,默认;2026-09 起自动流程仅出横屏,竖屏需手动 `--vertical`);片头为整体首页页头(口播"欢迎收看X月X日的每日AI快讯"),正文逐条切换单条快讯详情页
+- 工单: `publish_queue/YYYY-MM-DD-bilibili.json`(半自动,人工审核后发布;抖音工单已停用,需手动跑 `publisher_douyin.py --make-ticket`)
 
 ## 播报策划(手动筛选当天播报内容)
 

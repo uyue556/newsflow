@@ -58,7 +58,7 @@ log "[3/5] 生成静态站..."
     || fail "site_generator 失败"
 
 if [[ $DO_VIDEO -eq 1 ]]; then
-    log "[4/5] 渲染视频(竖屏+横屏,约需数分钟)..."
+    log "[4/5] 渲染视频(横屏,约需数分钟)..."
     CURATED="$PROJECT_ROOT/content/curated_${DATE}.json"
     if [[ -f "$CURATED" ]]; then
         log "[4/5] 检测到策划文件,使用人工播报列表(--curated)"
@@ -76,8 +76,7 @@ if [[ $DO_PUBLISH -eq 1 ]]; then
     log "[5/5] 生成发布工单..."
     "$PY" "$PROJECT_ROOT/src/publisher_bilibili.py" --make-ticket --date "$DATE" >>"$LOG_FILE" 2>&1 \
         || log "!! B站工单生成失败(不影响流程)"
-    "$PY" "$PROJECT_ROOT/src/publisher_douyin.py" --make-ticket --date "$DATE" >>"$LOG_FILE" 2>&1 \
-        || log "!! 抖音工单生成失败(不影响流程)"
+    # 抖音工单已停用(2026-09 起不再生成竖屏视频,如需手动: video_builder --vertical 后跑 publisher_douyin.py --make-ticket)
 else
     log "[5/5] 跳过发布工单(--no-publish)"
 fi
